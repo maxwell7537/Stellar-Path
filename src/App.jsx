@@ -1,11 +1,11 @@
 import React from 'react';
-import SkillTree from './components/SkillTree';
+import SkyrimSkillTree from './components/SkyrimSkillTree';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <SkillTree />
+      <SkyrimSkillTree />
     </div>
   );
 }

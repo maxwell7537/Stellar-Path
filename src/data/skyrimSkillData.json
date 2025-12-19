@@ -1,0 +1,355 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "theme": "skyrim_constellation",
+    "author": "CS修行者",
+    "lastModified": "2025-12-19"
+  },
+  "constellations": [
+    {
+      "id": "mage_ai",
+      "name": "The Arcanist",
+      "title": "智者之道",
+      "description": "赋予机器视力与思维的奥术",
+      "gradient": "from-blue-950 via-indigo-950 to-black",
+      "starColor": "#4dd0e1",
+      "glowColor": "#00bcd4",
+      "skills": [
+        {
+          "id": "cs_basics",
+          "name": "计算机基础",
+          "x": 50,
+          "y": 85,
+          "desc": "理解计算机工作原理",
+          "parent": null
+        },
+        {
+          "id": "data_structure",
+          "name": "数据结构",
+          "x": 35,
+          "y": 70,
+          "desc": "树、图、链表、栈、队列",
+          "parent": "cs_basics"
+        },
+        {
+          "id": "algorithm",
+          "name": "算法基础",
+          "x": 65,
+          "y": 70,
+          "desc": "排序、查找、动态规划",
+          "parent": "cs_basics"
+        },
+        {
+          "id": "lang_python",
+          "name": "Python",
+          "x": 30,
+          "y": 55,
+          "desc": "人生苦短，我用Python",
+          "parent": "data_structure"
+        },
+        {
+          "id": "python_advanced",
+          "name": "Python 进阶",
+          "x": 20,
+          "y": 40,
+          "desc": "装饰器、生成器、元类",
+          "parent": "lang_python"
+        },
+        {
+          "id": "python_libs",
+          "name": "Python 库",
+          "x": 40,
+          "y": 40,
+          "desc": "NumPy、Pandas、Matplotlib",
+          "parent": "lang_python"
+        },
+        {
+          "id": "ai_basics",
+          "name": "人工智能入门",
+          "x": 50,
+          "y": 50,
+          "desc": "机器学习基础概念",
+          "parent": "algorithm"
+        },
+        {
+          "id": "ml",
+          "name": "机器学习",
+          "x": 60,
+          "y": 35,
+          "desc": "监督学习、非监督学习",
+          "parent": "ai_basics"
+        },
+        {
+          "id": "dl",
+          "name": "深度学习",
+          "x": 50,
+          "y": 25,
+          "desc": "神经网络、CNN、RNN",
+          "parent": "ml"
+        },
+        {
+          "id": "opencv",
+          "name": "OpenCV",
+          "x": 30,
+          "y": 25,
+          "desc": "计算机视觉基础库",
+          "parent": "python_libs"
+        },
+        {
+          "id": "cv_advanced",
+          "name": "高级视觉",
+          "x": 40,
+          "y": 15,
+          "desc": "人脸识别、物体检测",
+          "parent": "opencv"
+        },
+        {
+          "id": "nlp",
+          "name": "自然语言处理",
+          "x": 70,
+          "y": 25,
+          "desc": "让机器理解人类语言",
+          "parent": "ai_basics"
+        },
+        {
+          "id": "nlp_advanced",
+          "name": "NLP 高级",
+          "x": 60,
+          "y": 15,
+          "desc": "BERT、GPT、大语言模型",
+          "parent": "nlp"
+        }
+      ]
+    },
+    {
+      "id": "warrior_security",
+      "name": "The Breaker",
+      "title": "破坏者之力",
+      "description": "攻破防火墙的毁灭之力",
+      "gradient": "from-red-950 via-orange-950 to-black",
+      "starColor": "#ff5252",
+      "glowColor": "#ff1744",
+      "skills": [
+        {
+          "id": "network",
+          "name": "计算机网络",
+          "x": 50,
+          "y": 85,
+          "desc": "TCP/IP、HTTP/HTTPS",
+          "parent": null
+        },
+        {
+          "id": "security_basics",
+          "name": "安全意识",
+          "x": 50,
+          "y": 70,
+          "desc": "安全是一切的基础",
+          "parent": "network"
+        },
+        {
+          "id": "web_security",
+          "name": "Web 安全",
+          "x": 35,
+          "y": 55,
+          "desc": "XSS、CSRF、点击劫持",
+          "parent": "security_basics"
+        },
+        {
+          "id": "sql_injection",
+          "name": "SQL注入",
+          "x": 25,
+          "y": 40,
+          "desc": "利用输入漏洞操纵数据库",
+          "parent": "web_security"
+        },
+        {
+          "id": "crypto",
+          "name": "密码学",
+          "x": 50,
+          "y": 55,
+          "desc": "对称加密、非对称加密",
+          "parent": "security_basics"
+        },
+        {
+          "id": "os",
+          "name": "操作系统",
+          "x": 65,
+          "y": 55,
+          "desc": "进程、线程、内存管理",
+          "parent": "security_basics"
+        },
+        {
+          "id": "reverse_engineering",
+          "name": "逆向工程",
+          "x": 75,
+          "y": 40,
+          "desc": "汇编、脱壳、破解",
+          "parent": "os"
+        },
+        {
+          "id": "buffer_overflow",
+          "name": "缓冲区溢出",
+          "x": 85,
+          "y": 30,
+          "desc": "栈溢出、堆溢出",
+          "parent": "reverse_engineering"
+        },
+        {
+          "id": "penetration",
+          "name": "渗透测试",
+          "x": 50,
+          "y": 35,
+          "desc": "Kali Linux、Metasploit",
+          "parent": "crypto"
+        },
+        {
+          "id": "exploit_dev",
+          "name": "漏洞利用",
+          "x": 40,
+          "y": 20,
+          "desc": "0day、EXP编写",
+          "parent": "penetration"
+        }
+      ]
+    },
+    {
+      "id": "thief_devops",
+      "name": "The Engineer",
+      "title": "工匠之技",
+      "description": "潜行于服务器后台，连接万物",
+      "gradient": "from-emerald-950 via-teal-950 to-black",
+      "starColor": "#4caf50",
+      "glowColor": "#00e676",
+      "skills": [
+        {
+          "id": "lang_javascript",
+          "name": "JavaScript",
+          "x": 50,
+          "y": 85,
+          "desc": "浏览器的魔法语言",
+          "parent": null
+        },
+        {
+          "id": "web_basics",
+          "name": "Web 开发",
+          "x": 35,
+          "y": 70,
+          "desc": "HTML、CSS、JavaScript",
+          "parent": "lang_javascript"
+        },
+        {
+          "id": "react",
+          "name": "React",
+          "x": 25,
+          "y": 55,
+          "desc": "现代前端框架",
+          "parent": "web_basics"
+        },
+        {
+          "id": "vue",
+          "name": "Vue",
+          "x": 45,
+          "y": 55,
+          "desc": "渐进式前端框架",
+          "parent": "web_basics"
+        },
+        {
+          "id": "nodejs",
+          "name": "Node.js",
+          "x": 65,
+          "y": 70,
+          "desc": "JavaScript 服务端",
+          "parent": "lang_javascript"
+        },
+        {
+          "id": "express",
+          "name": "Express",
+          "x": 75,
+          "y": 55,
+          "desc": "轻量级 Web 框架",
+          "parent": "nodejs"
+        },
+        {
+          "id": "db_basics",
+          "name": "数据库",
+          "x": 50,
+          "y": 60,
+          "desc": "数据持久化的核心",
+          "parent": "lang_javascript"
+        },
+        {
+          "id": "sql",
+          "name": "SQL",
+          "x": 40,
+          "y": 45,
+          "desc": "结构化查询语言",
+          "parent": "db_basics"
+        },
+        {
+          "id": "mysql",
+          "name": "MySQL",
+          "x": 30,
+          "y": 35,
+          "desc": "关系型数据库",
+          "parent": "sql"
+        },
+        {
+          "id": "redis",
+          "name": "Redis",
+          "x": 50,
+          "y": 40,
+          "desc": "高性能缓存",
+          "parent": "db_basics"
+        },
+        {
+          "id": "mongodb",
+          "name": "MongoDB",
+          "x": 60,
+          "y": 45,
+          "desc": "NoSQL 文档库",
+          "parent": "db_basics"
+        },
+        {
+          "id": "linux",
+          "name": "Linux",
+          "x": 70,
+          "y": 35,
+          "desc": "Shell、文件操作",
+          "parent": "express"
+        },
+        {
+          "id": "docker",
+          "name": "Docker",
+          "x": 65,
+          "y": 25,
+          "desc": "容器化技术",
+          "parent": "linux"
+        },
+        {
+          "id": "k8s",
+          "name": "Kubernetes",
+          "x": 55,
+          "y": 15,
+          "desc": "容器编排",
+          "parent": "docker"
+        },
+        {
+          "id": "git",
+          "name": "Git",
+          "x": 75,
+          "y": 20,
+          "desc": "版本控制",
+          "parent": "linux"
+        },
+        {
+          "id": "cicd",
+          "name": "CI/CD",
+          "x": 45,
+          "y": 20,
+          "desc": "持续集成与部署",
+          "parent": "docker"
+        }
+      ]
+    }
+  ]
+}
