@@ -1,0 +1,20 @@
+{
+  "id": "constellation_python",
+  "name": "The Serpent",
+  "title": "灵蛇之语 · Python",
+  "description": "人生苦短，我用 Python。",
+  "gradient": "from-blue-950 via-slate-900 to-black",
+  "starColor": "#40c4ff",
+  "glowColor": "#00b0ff",
+  "skills": [
+    { "id": "py_base", "name": "Python 基础", "x": 50, "y": 90, "desc": "解释器，缩进规则，变量", "parent": null },
+    { "id": "py_data", "name": "数据结构", "x": 35, "y": 80, "desc": "List, Dict, Tuple, Set", "parent": "py_base" },
+    { "id": "py_flow", "name": "控制流", "x": 65, "y": 80, "desc": "If, For, While, Try-Except", "parent": "py_base" },
+    { "id": "py_func", "name": "函数编程", "x": 50, "y": 70, "desc": "Def, Lambda, 装饰器", "parent": "py_base" },
+    { "id": "py_oop", "name": "面向对象", "x": 50, "y": 60, "desc": "Class, Self, 继承, 多态", "parent": "py_func" },
+    { "id": "py_spider", "name": "网络爬虫", "x": 30, "y": 50, "desc": "Requests, BeautifulSoup, Scrapy", "parent": "py_oop" },
+    { "id": "py_selenium", "name": "自动化", "x": 20, "y": 40, "desc": "Selenium, 浏览器模拟", "parent": "py_spider" },
+    { "id": "py_data_sci", "name": "数据分析", "x": 70, "y": 50, "desc": "NumPy, Pandas, Matplotlib", "parent": "py_oop" },
+    { "id": "py_ml", "name": "机器学习", "x": 80, "y": 40, "desc": "Scikit-learn, 监督学习", "parent": "py_data_sci" }
+  ]
+}

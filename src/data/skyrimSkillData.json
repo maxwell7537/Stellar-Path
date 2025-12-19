@@ -1,354 +1,104 @@
 {
   "meta": {
-    "version": "2.0.0",
-    "theme": "skyrim_constellation",
-    "author": "CS修行者",
-    "lastModified": "2025-12-19"
+    "version": "4.0.0",
+    "theme": "grand_master_archive",
+    "author": "CS_Cultivator",
+    "description": "全栈计算机知识体系 - 深度细化版"
   },
   "constellations": [
     {
-      "id": "mage_ai",
+      "id": "constellation_arcanist",
       "name": "The Arcanist",
-      "title": "智者之道",
-      "description": "赋予机器视力与思维的奥术",
-      "gradient": "from-blue-950 via-indigo-950 to-black",
-      "starColor": "#4dd0e1",
-      "glowColor": "#00bcd4",
+      "title": "万法归一 · 算法与智能",
+      "description": "从比特的律动到神经网络的觉醒，掌握计算的本质。",
+      "gradient": "from-slate-950 via-indigo-950 to-black",
+      "starColor": "#80d8ff",
+      "glowColor": "#00b0ff",
       "skills": [
-        {
-          "id": "cs_basics",
-          "name": "计算机基础",
-          "x": 50,
-          "y": 85,
-          "desc": "理解计算机工作原理",
-          "parent": null
-        },
-        {
-          "id": "data_structure",
-          "name": "数据结构",
-          "x": 35,
-          "y": 70,
-          "desc": "树、图、链表、栈、队列",
-          "parent": "cs_basics"
-        },
-        {
-          "id": "algorithm",
-          "name": "算法基础",
-          "x": 65,
-          "y": 70,
-          "desc": "排序、查找、动态规划",
-          "parent": "cs_basics"
-        },
-        {
-          "id": "lang_python",
-          "name": "Python",
-          "x": 30,
-          "y": 55,
-          "desc": "人生苦短，我用Python",
-          "parent": "data_structure"
-        },
-        {
-          "id": "python_advanced",
-          "name": "Python 进阶",
-          "x": 20,
-          "y": 40,
-          "desc": "装饰器、生成器、元类",
-          "parent": "lang_python"
-        },
-        {
-          "id": "python_libs",
-          "name": "Python 库",
-          "x": 40,
-          "y": 40,
-          "desc": "NumPy、Pandas、Matplotlib",
-          "parent": "lang_python"
-        },
-        {
-          "id": "ai_basics",
-          "name": "人工智能入门",
-          "x": 50,
-          "y": 50,
-          "desc": "机器学习基础概念",
-          "parent": "algorithm"
-        },
-        {
-          "id": "ml",
-          "name": "机器学习",
-          "x": 60,
-          "y": 35,
-          "desc": "监督学习、非监督学习",
-          "parent": "ai_basics"
-        },
-        {
-          "id": "dl",
-          "name": "深度学习",
-          "x": 50,
-          "y": 25,
-          "desc": "神经网络、CNN、RNN",
-          "parent": "ml"
-        },
-        {
-          "id": "opencv",
-          "name": "OpenCV",
-          "x": 30,
-          "y": 25,
-          "desc": "计算机视觉基础库",
-          "parent": "python_libs"
-        },
-        {
-          "id": "cv_advanced",
-          "name": "高级视觉",
-          "x": 40,
-          "y": 15,
-          "desc": "人脸识别、物体检测",
-          "parent": "opencv"
-        },
-        {
-          "id": "nlp",
-          "name": "自然语言处理",
-          "x": 70,
-          "y": 25,
-          "desc": "让机器理解人类语言",
-          "parent": "ai_basics"
-        },
-        {
-          "id": "nlp_advanced",
-          "name": "NLP 高级",
-          "x": 60,
-          "y": 15,
-          "desc": "BERT、GPT、大语言模型",
-          "parent": "nlp"
-        }
+        { "id": "cs_root", "name": "二进制之道", "x": 50, "y": 92, "desc": "0与1的哲学，补码与位运算", "parent": null },
+        
+        { "id": "lang_py_base", "name": "Python 语法", "x": 35, "y": 80, "desc": "解释器的低语，变量与动态类型", "parent": "cs_root" },
+        { "id": "lang_py_oop", "name": "面向对象", "x": 25, "y": 70, "desc": "类与实例，继承与多态的契约", "parent": "lang_py_base" },
+        { "id": "lang_py_magic", "name": "魔法方法", "x": 15, "y": 60, "desc": "__init__, __new__, __call__", "parent": "lang_py_oop" },
+        { "id": "lang_py_decorator", "name": "装饰器", "x": 25, "y": 55, "desc": "闭包的应用，修改函数的函数", "parent": "lang_py_oop" },
+        { "id": "lang_py_async", "name": "协程并发", "x": 15, "y": 45, "desc": "Async/Await，超越线程的束缚", "parent": "lang_py_decorator" },
+
+        { "id": "ds_root", "name": "线性结构", "x": 65, "y": 80, "desc": "数组、链表、栈与队列", "parent": "cs_root" },
+        { "id": "ds_tree", "name": "树形结构", "x": 75, "y": 70, "desc": "二叉树、AVL树、红黑树", "parent": "ds_root" },
+        { "id": "ds_heap", "name": "堆结构", "x": 85, "y": 60, "desc": "优先队列，大顶堆与小顶堆", "parent": "ds_tree" },
+        { "id": "ds_graph", "name": "图论", "x": 75, "y": 55, "desc": "邻接矩阵，DFS与BFS遍历", "parent": "ds_tree" },
+        { "id": "algo_dp", "name": "动态规划", "x": 85, "y": 45, "desc": "状态转移方程，以空间换时间", "parent": "ds_graph" },
+
+        { "id": "ai_math", "name": "计算数学", "x": 50, "y": 65, "desc": "线性代数，概率论与导数", "parent": "cs_root" },
+        { "id": "ai_numpy", "name": "矩阵运算", "x": 45, "y": 50, "desc": "NumPy Broadcasting，维度变换", "parent": "ai_math" },
+        { "id": "cv_pixel", "name": "像素操作", "x": 35, "y": 40, "desc": "OpenCV基础，图像本质是矩阵", "parent": "ai_numpy" },
+        { "id": "cv_filter", "name": "卷积滤波", "x": 30, "y": 30, "desc": "高斯核，Sobel算子，边缘提取", "parent": "cv_pixel" },
+        
+        { "id": "nn_base", "name": "神经网络", "x": 55, "y": 40, "desc": "感知机，激活函数(Sigmoid/ReLU)", "parent": "ai_numpy" },
+        { "id": "nn_bp", "name": "反向传播", "x": 60, "y": 30, "desc": "梯度下降，链式法则的威力", "parent": "nn_base" },
+        { "id": "dl_cnn", "name": "CNN 卷积网", "x": 50, "y": 20, "desc": "池化层与卷积层，空间特征提取", "parent": "nn_bp" },
+        { "id": "dl_transformer", "name": "Transformer", "x": 65, "y": 15, "desc": "自注意力机制，大模型的基石", "parent": "nn_bp" }
       ]
     },
     {
-      "id": "warrior_security",
+      "id": "constellation_breaker",
       "name": "The Breaker",
-      "title": "破坏者之力",
-      "description": "攻破防火墙的毁灭之力",
-      "gradient": "from-red-950 via-orange-950 to-black",
+      "title": "破阵之矛 · 网络安全",
+      "description": "探寻系统的裂痕，在攻防博弈中掌控权限。",
+      "gradient": "from-red-950 via-rose-950 to-black",
       "starColor": "#ff5252",
-      "glowColor": "#ff1744",
+      "glowColor": "#d50000",
       "skills": [
-        {
-          "id": "network",
-          "name": "计算机网络",
-          "x": 50,
-          "y": 85,
-          "desc": "TCP/IP、HTTP/HTTPS",
-          "parent": null
-        },
-        {
-          "id": "security_basics",
-          "name": "安全意识",
-          "x": 50,
-          "y": 70,
-          "desc": "安全是一切的基础",
-          "parent": "network"
-        },
-        {
-          "id": "web_security",
-          "name": "Web 安全",
-          "x": 35,
-          "y": 55,
-          "desc": "XSS、CSRF、点击劫持",
-          "parent": "security_basics"
-        },
-        {
-          "id": "sql_injection",
-          "name": "SQL注入",
-          "x": 25,
-          "y": 40,
-          "desc": "利用输入漏洞操纵数据库",
-          "parent": "web_security"
-        },
-        {
-          "id": "crypto",
-          "name": "密码学",
-          "x": 50,
-          "y": 55,
-          "desc": "对称加密、非对称加密",
-          "parent": "security_basics"
-        },
-        {
-          "id": "os",
-          "name": "操作系统",
-          "x": 65,
-          "y": 55,
-          "desc": "进程、线程、内存管理",
-          "parent": "security_basics"
-        },
-        {
-          "id": "reverse_engineering",
-          "name": "逆向工程",
-          "x": 75,
-          "y": 40,
-          "desc": "汇编、脱壳、破解",
-          "parent": "os"
-        },
-        {
-          "id": "buffer_overflow",
-          "name": "缓冲区溢出",
-          "x": 85,
-          "y": 30,
-          "desc": "栈溢出、堆溢出",
-          "parent": "reverse_engineering"
-        },
-        {
-          "id": "penetration",
-          "name": "渗透测试",
-          "x": 50,
-          "y": 35,
-          "desc": "Kali Linux、Metasploit",
-          "parent": "crypto"
-        },
-        {
-          "id": "exploit_dev",
-          "name": "漏洞利用",
-          "x": 40,
-          "y": 20,
-          "desc": "0day、EXP编写",
-          "parent": "penetration"
-        }
+        { "id": "net_tcp", "name": "TCP/IP", "x": 50, "y": 90, "desc": "三次握手，四次挥手，可靠传输", "parent": null },
+        { "id": "net_http", "name": "HTTP 协议", "x": 50, "y": 78, "desc": "报文结构，状态码，Header解析", "parent": "net_tcp" },
+
+        { "id": "web_owasp", "name": "OWASP Top10", "x": 30, "y": 70, "desc": "Web应用最常见的十大风险", "parent": "net_http" },
+        { "id": "sqli_union", "name": "SQL 显错注入", "x": 20, "y": 60, "desc": "UNION SELECT，拼接查询结果", "parent": "web_owasp" },
+        { "id": "sqli_blind", "name": "SQL 盲注", "x": 10, "y": 50, "desc": "布尔与时间盲注，逐位猜解", "parent": "sqli_union" },
+        { "id": "sqli_bypass", "name": "WAF 绕过", "x": 20, "y": 40, "desc": "双写、编码、注释符混淆", "parent": "sqli_union" },
+        
+        { "id": "xss_reflect", "name": "反射型 XSS", "x": 35, "y": 55, "desc": "URL传参，脚本回显执行", "parent": "web_owasp" },
+        { "id": "xss_stored", "name": "存储型 XSS", "x": 40, "y": 45, "desc": "脚本持久化入库，危害极大", "parent": "xss_reflect" },
+        { "id": "vuln_csrf", "name": "CSRF", "x": 30, "y": 35, "desc": "跨站请求伪造，借刀杀人", "parent": "xss_reflect" },
+
+        { "id": "sys_linux", "name": "Linux 权限", "x": 70, "y": 70, "desc": "RWX, Chmod, SUID提权基础", "parent": "net_tcp" },
+        { "id": "bin_asm", "name": "汇编语言", "x": 80, "y": 60, "desc": "寄存器，堆栈，MOV与JMP", "parent": "sys_linux" },
+        { "id": "bin_pwn_stack", "name": "栈溢出", "x": 90, "y": 50, "desc": "覆盖Ret地址，劫持控制流", "parent": "bin_asm" },
+        { "id": "bin_shellcode", "name": "Shellcode", "x": 80, "y": 40, "desc": "编写机器码，获取Shell", "parent": "bin_pwn_stack" },
+        { "id": "bin_rop", "name": "ROP 技术", "x": 90, "y": 30, "desc": "绕过NX保护，利用代码片段", "parent": "bin_pwn_stack" },
+
+        { "id": "tool_kali", "name": "Kali Linux", "x": 60, "y": 50, "desc": "黑客军火库", "parent": "sys_linux" },
+        { "id": "tool_metasploit", "name": "Metasploit", "x": 60, "y": 35, "desc": "MSF框架，自动化渗透", "parent": "tool_kali" }
       ]
     },
     {
-      "id": "thief_devops",
+      "id": "constellation_engineer",
       "name": "The Engineer",
-      "title": "工匠之技",
-      "description": "潜行于服务器后台，连接万物",
+      "title": "造物之手 · 全栈工程",
+      "description": "编织代码的经纬，构建承载万物的云端世界。",
       "gradient": "from-emerald-950 via-teal-950 to-black",
-      "starColor": "#4caf50",
-      "glowColor": "#00e676",
+      "starColor": "#69f0ae",
+      "glowColor": "#00c853",
       "skills": [
-        {
-          "id": "lang_javascript",
-          "name": "JavaScript",
-          "x": 50,
-          "y": 85,
-          "desc": "浏览器的魔法语言",
-          "parent": null
-        },
-        {
-          "id": "web_basics",
-          "name": "Web 开发",
-          "x": 35,
-          "y": 70,
-          "desc": "HTML、CSS、JavaScript",
-          "parent": "lang_javascript"
-        },
-        {
-          "id": "react",
-          "name": "React",
-          "x": 25,
-          "y": 55,
-          "desc": "现代前端框架",
-          "parent": "web_basics"
-        },
-        {
-          "id": "vue",
-          "name": "Vue",
-          "x": 45,
-          "y": 55,
-          "desc": "渐进式前端框架",
-          "parent": "web_basics"
-        },
-        {
-          "id": "nodejs",
-          "name": "Node.js",
-          "x": 65,
-          "y": 70,
-          "desc": "JavaScript 服务端",
-          "parent": "lang_javascript"
-        },
-        {
-          "id": "express",
-          "name": "Express",
-          "x": 75,
-          "y": 55,
-          "desc": "轻量级 Web 框架",
-          "parent": "nodejs"
-        },
-        {
-          "id": "db_basics",
-          "name": "数据库",
-          "x": 50,
-          "y": 60,
-          "desc": "数据持久化的核心",
-          "parent": "lang_javascript"
-        },
-        {
-          "id": "sql",
-          "name": "SQL",
-          "x": 40,
-          "y": 45,
-          "desc": "结构化查询语言",
-          "parent": "db_basics"
-        },
-        {
-          "id": "mysql",
-          "name": "MySQL",
-          "x": 30,
-          "y": 35,
-          "desc": "关系型数据库",
-          "parent": "sql"
-        },
-        {
-          "id": "redis",
-          "name": "Redis",
-          "x": 50,
-          "y": 40,
-          "desc": "高性能缓存",
-          "parent": "db_basics"
-        },
-        {
-          "id": "mongodb",
-          "name": "MongoDB",
-          "x": 60,
-          "y": 45,
-          "desc": "NoSQL 文档库",
-          "parent": "db_basics"
-        },
-        {
-          "id": "linux",
-          "name": "Linux",
-          "x": 70,
-          "y": 35,
-          "desc": "Shell、文件操作",
-          "parent": "express"
-        },
-        {
-          "id": "docker",
-          "name": "Docker",
-          "x": 65,
-          "y": 25,
-          "desc": "容器化技术",
-          "parent": "linux"
-        },
-        {
-          "id": "k8s",
-          "name": "Kubernetes",
-          "x": 55,
-          "y": 15,
-          "desc": "容器编排",
-          "parent": "docker"
-        },
-        {
-          "id": "git",
-          "name": "Git",
-          "x": 75,
-          "y": 20,
-          "desc": "版本控制",
-          "parent": "linux"
-        },
-        {
-          "id": "cicd",
-          "name": "CI/CD",
-          "x": 45,
-          "y": 20,
-          "desc": "持续集成与部署",
-          "parent": "docker"
-        }
+        { "id": "fe_root", "name": "DOM 树", "x": 30, "y": 90, "desc": "文档对象模型，页面的骨架", "parent": null },
+        { "id": "js_es6", "name": "ES6+ 规范", "x": 30, "y": 75, "desc": "Let/Const, 箭头函数, 解构", "parent": "fe_root" },
+        { "id": "js_promise", "name": "Promise", "x": 20, "y": 65, "desc": "异步编程，链式调用的承诺", "parent": "js_es6" },
+        { "id": "js_closure", "name": "闭包与作用域", "x": 40, "y": 65, "desc": "函数上下文，记忆的艺术", "parent": "js_es6" },
+        { "id": "react_fiber", "name": "React Fiber", "x": 25, "y": 50, "desc": "虚拟DOM，协调算法", "parent": "js_promise" },
+        { "id": "react_hooks", "name": "Hooks API", "x": 15, "y": 40, "desc": "useEffect, useState, 逻辑复用", "parent": "react_fiber" },
+
+        { "id": "be_node", "name": "Node.js Runtime", "x": 50, "y": 80, "desc": "V8引擎，事件驱动，非阻塞I/O", "parent": "js_es6" },
+        { "id": "be_api", "name": "RESTful API", "x": 50, "y": 65, "desc": "资源导向，HTTP动词规范", "parent": "be_node" },
+        { "id": "db_mysql_idx", "name": "MySQL 索引", "x": 45, "y": 50, "desc": "B+树，聚簇索引，性能优化", "parent": "be_api" },
+        { "id": "db_redis_cache", "name": "Redis 缓存", "x": 55, "y": 50, "desc": "KV结构，持久化(RDB/AOF)", "parent": "be_api" },
+
+        { "id": "ops_linux", "name": "Linux Shell", "x": 70, "y": 90, "desc": "Bash/Zsh，管道与重定向", "parent": null },
+        { "id": "ops_git", "name": "Git 协作", "x": 70, "y": 75, "desc": "Branch, Merge, Rebase, Cherry-pick", "parent": "ops_linux" },
+        { "id": "ops_docker", "name": "Docker", "x": 70, "y": 60, "desc": "镜像分层，容器隔离技术", "parent": "ops_git" },
+        { "id": "ops_dockerfile", "name": "Dockerfile", "x": 60, "y": 50, "desc": "编写构建脚本，多阶段构建", "parent": "ops_docker" },
+        { "id": "ops_k8s_pod", "name": "K8s Pod", "x": 70, "y": 40, "desc": "最小部署单元，Sidecar模式", "parent": "ops_docker" },
+        { "id": "ops_k8s_svc", "name": "K8s Service", "x": 80, "y": 30, "desc": "服务发现，负载均衡", "parent": "ops_k8s_pod" },
+        { "id": "ops_cicd", "name": "CI/CD 流水线", "x": 80, "y": 50, "desc": "自动化测试，自动化部署", "parent": "ops_docker" }
       ]
     }
   ]

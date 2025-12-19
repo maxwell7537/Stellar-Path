@@ -1,33 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConstellationView from './ConstellationView';
-import skyrimData from '../data/skyrimSkillData.json';
+import { constellationRegistry } from '../data';
 
 const SkyrimSkillTree = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [unlockedSkills, setUnlockedSkills] = useState([]);
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPos, setTooltipPos] = useState(null); // { left, top } in root coordinates (px)
+  const [flashNodeId, setFlashNodeId] = useState(null);
+  const [warningMsg, setWarningMsg] = useState('');
+  const [showWarning, setShowWarning] = useState(false);
+  const [scale, setScale] = useState(1);
+  // 初始向上偏移一点，使视图稍微向上展示（更接近自然阅读位置）
+  const [pan, setPan] = useState({ x: 0, y: -10 }); // 视图单位偏移（0-100）
+  const containerRef = useRef(null);
+  const rootRef = useRef(null);
+  const draggingRef = useRef({ dragging: false, startX: 0, startY: 0, startPan: { x: 0, y: 0 } });
 
-  const constellations = skyrimData.constellations;
+  const constellations = constellationRegistry;
   const currentConstellation = constellations[currentIndex];
 
   // 从 localStorage 加载进度
   useEffect(() => {
-    const saved = localStorage.getItem('skyrim_skill_progress');
-    if (saved) {
-      try {
-        setUnlockedSkills(JSON.parse(saved));
-      } catch (e) {
-        console.error('加载进度失败:', e);
+    try {
+      const saved = localStorage.getItem('skyrim_skill_progress');
+      console.log('SkyrimSkillTree: 从 localStorage 加载 raw 值:', saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        console.log('SkyrimSkillTree: 解析后的已解锁技能:', parsed);
+        setUnlockedSkills(parsed);
       }
+    } catch (e) {
+      console.error('SkyrimSkillTree: 加载进度失败:', e);
     }
   }, []);
-
-  // 自动保存进度
-  useEffect(() => {
-    localStorage.setItem('skyrim_skill_progress', JSON.stringify(unlockedSkills));
-  }, [unlockedSkills]);
 
   // 切换到下一个星座
   const nextConstellation = () => {
@@ -43,28 +52,76 @@ const SkyrimSkillTree = () => {
 
   // 检查技能是否可以解锁
   const canUnlock = (skill) => {
+    // 根节点或无父节点可直接解锁
     if (!skill.parent) return true;
+    // 如果节点配置了 freeUnlock，则允许单独点亮
+    if (skill.freeUnlock) return true;
+    // 否则要求父节点已解锁
     return unlockedSkills.includes(skill.parent);
   };
 
   // 处理技能点击
-  const handleSkillClick = (skill) => {
-    setSelectedSkill(skill);
-    setShowTooltip(true);
+  const handleSkillClick = (skill, pos) => {
+    // 先准备 tooltipPos（如果有）但不要默认打开 tooltip，只有在可查看或已解锁时再打开
 
-    // 如果已解锁，可以取消解锁
+    // 计算并设置 tooltip 的像素位置（相对于根容器）
+    if (pos && rootRef.current && pos.rect) {
+      const rootRect = rootRef.current.getBoundingClientRect();
+      // pos.rect 是节点的 screen rect
+      const nodeRect = pos.rect;
+      // 希望弹窗的左下角（left,bottom）放在节点右侧一点，垂直对齐到节点中心
+      const gap = 8; // 与节点的水平间隙
+      const nodeCenterY = nodeRect.top + nodeRect.height / 2;
+      // 计算 popup 宽度限制
+      const popupWidth = Math.min(384, Math.max(200, rootRect.width - 32));
+
+      // 按照要求：x 坐标选择为屏幕中心减去弹窗宽度（使弹窗右边缘对齐到中线），并做边界夹紧
+      const centerX = Math.round(rootRect.width / 2);
+      let leftPx = centerX - popupWidth;
+      // 夹紧到可见范围，保留最小边距 16px
+      leftPx = Math.max(16, Math.min(leftPx, rootRect.width - popupWidth - 16));
+
+      // bottom（相对于 root 底部）= rootRect.height - nodeCenterY
+      const bottomPx = Math.max(8, Math.round(rootRect.height - nodeCenterY));
+
+      setTooltipPos({ left: leftPx, bottom: bottomPx, popupWidth });
+    } else {
+      setTooltipPos(null);
+    }
+
+    // 如果已解锁，则选中并显示详情
     if (unlockedSkills.includes(skill.id)) {
-      setUnlockedSkills(unlockedSkills.filter(id => id !== skill.id));
+      setSelectedSkill(skill);
+      setShowTooltip(true);
+      const next = unlockedSkills.filter(id => id !== skill.id);
+      setUnlockedSkills(next);
+      console.log('SkyrimSkillTree: 取消解锁技能', skill.id, 'next unlockedSkills:', next);
       return;
     }
 
     // 检查是否可以解锁
     if (canUnlock(skill)) {
-      setUnlockedSkills([...unlockedSkills, skill.id]);
+      // 可解锁：解锁并显示详情
+      const next = [...unlockedSkills, skill.id];
+      setUnlockedSkills(next);
+      setSelectedSkill(skill);
+      setShowTooltip(true);
+      console.log('SkyrimSkillTree: 解锁技能', skill.id, 'next unlockedSkills:', next);
     } else {
-      // 播放错误提示
+      // 父节点未解锁：不要弹 alert，改为节点短暂变色并在屏幕中偏上位置显示暗红色警告，持续 1 秒
       const parentSkill = currentConstellation.skills.find(s => s.id === skill.parent);
-      alert(`需要先学习：${parentSkill?.name || '前置技能'}`);
+      const parentName = parentSkill?.name || '前置技能';
+      // 触发节点闪烁
+      setFlashNodeId(skill.id);
+      // 显示警告
+      setWarningMsg(`${parentName} 未解锁，无法解锁 ${skill.name}！`);
+      setShowWarning(true);
+      // 1 秒后清除（恢复节点颜色与隐藏警告）
+      setTimeout(() => {
+        setFlashNodeId(null);
+        setShowWarning(false);
+        setWarningMsg('');
+      }, 1000);
     }
   };
 
@@ -73,8 +130,56 @@ const SkyrimSkillTree = () => {
     if (window.confirm('确定要重置所有进度吗？此操作不可撤销！')) {
       setUnlockedSkills([]);
       setSelectedSkill(null);
-      localStorage.removeItem('skyrim_skill_progress');
+      try {
+        localStorage.removeItem('skyrim_skill_progress');
+        console.log('SkyrimSkillTree: 已从 localStorage 删除 skyrim_skill_progress');
+      } catch (e) {
+        console.error('SkyrimSkillTree: 删除 localStorage 错误', e);
+      }
     }
+  };
+
+  // 缩放控制
+  const clampScale = (v) => Math.max(0.5, Math.min(3, v));
+  const zoomIn = () => setScale(s => clampScale(Math.round((s * 1.1) * 100) / 100));
+  const zoomOut = () => setScale(s => clampScale(Math.round((s / 1.1) * 100) / 100));
+  const resetZoom = () => setScale(1);
+
+  // 平移（拖拽）支持：pointer 事件
+  const onPointerDown = (e) => {
+    if (e.button !== 0) return; // 只响应左键
+    const el = containerRef.current;
+    if (!el) return;
+    el.setPointerCapture?.(e.pointerId);
+    draggingRef.current = {
+      dragging: true,
+      startX: e.clientX,
+      startY: e.clientY,
+      startPan: { ...pan }
+    };
+  };
+
+  const onPointerMove = (e) => {
+    if (!draggingRef.current.dragging) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const dx = e.clientX - draggingRef.current.startX;
+    const dy = e.clientY - draggingRef.current.startY;
+    // 像素 -> viewBox(0-100) 单位
+    const deltaX = (dx / rect.width) * 100;
+    const deltaY = (dy / rect.height) * 100;
+    const next = {
+      x: Math.max(-300, Math.min(300, draggingRef.current.startPan.x + deltaX)),
+      y: Math.max(-300, Math.min(300, draggingRef.current.startPan.y + deltaY))
+    };
+    setPan(next);
+  };
+
+  const onPointerUp = (e) => {
+    if (!draggingRef.current.dragging) return;
+    const el = containerRef.current;
+    el.releasePointerCapture?.(e.pointerId);
+    draggingRef.current.dragging = false;
   };
 
   // 计算当前星座的进度
@@ -87,8 +192,12 @@ const SkyrimSkillTree = () => {
   const totalSkills = constellations.reduce((sum, c) => sum + c.skills.length, 0);
   const totalUnlocked = unlockedSkills.length;
 
+  // 调试：在每次渲染时输出当前星座与已解锁数组，便于定位刷新后渲染问题
+  console.log('SkyrimSkillTree: render - currentConstellation:', currentConstellation.id, 'unlockedSkills:', unlockedSkills);
+
   return (
     <div 
+      ref={rootRef}
       className={`w-screen h-screen overflow-hidden bg-gradient-to-b ${currentConstellation.gradient} text-white relative transition-all duration-1000`}
       style={{ fontFamily: "'Cinzel', serif" }}
     >
@@ -153,7 +262,24 @@ const SkyrimSkillTree = () => {
       </button>
 
       {/* 星座绘制区域 - 简化动画 */}
-      <div className="w-full h-full flex items-center justify-center p-16">
+      <div
+        className="w-full h-full flex items-center justify-center p-16"
+        ref={containerRef}
+        onWheel={(e) => {
+          // 按住 Ctrl 时缩放，避免与默认滚动冲突
+          if (e.ctrlKey) {
+            e.preventDefault();
+            const delta = -e.deltaY;
+            const factor = delta > 0 ? 1.05 : 0.95;
+            setScale(s => clampScale(Math.round((s * factor) * 100) / 100));
+          }
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
         <div className="w-full h-full max-w-5xl max-h-5xl relative">
           <AnimatePresence mode="wait">
             <motion.div
@@ -169,6 +295,9 @@ const SkyrimSkillTree = () => {
                 unlockedSkills={unlockedSkills}
                 onSkillClick={handleSkillClick}
                 selectedSkillId={selectedSkill?.id}
+                scale={scale}
+                pan={pan}
+                flashNodeId={flashNodeId}
               />
             </motion.div>
           </AnimatePresence>
@@ -238,14 +367,20 @@ const SkyrimSkillTree = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="absolute bottom-32 left-1/2 -translate-x-1/2 w-96 bg-black/70 backdrop-blur-md border-t-2 border-b-2 p-4 z-30 text-center"
+            className="absolute bg-black/70 backdrop-blur-md border-t-2 border-b-2 p-4 z-30 text-center"
             style={{ 
               borderColor: `${currentConstellation.starColor}40`,
-              boxShadow: `0 0 30px ${currentConstellation.glowColor}20`
+              boxShadow: `0 0 30px ${currentConstellation.glowColor}20`,
+              // 使用计算好的像素位置（如果没有位置则回退到底部居中）
+              left: tooltipPos ? `${tooltipPos.left}px` : '50%',
+              bottom: tooltipPos ? `${tooltipPos.bottom}px` : undefined,
+              top: tooltipPos ? undefined : undefined,
+              width: tooltipPos ? `${tooltipPos.popupWidth}px` : undefined,
+              transform: tooltipPos ? 'translateX(0)' : 'translateX(-50%)'
             }}
           >
             <button
-              onClick={() => setShowTooltip(false)}
+              onClick={() => { setShowTooltip(false); setTooltipPos(null); }}
               className="absolute top-1 right-2 text-white/40 hover:text-white text-sm"
             >
               ✕
@@ -287,6 +422,30 @@ const SkyrimSkillTree = () => {
         )}
       </AnimatePresence>
 
+      {/* 父节点未解锁时的短时警告（暗红色，屏幕正中偏上） */}
+      {showWarning && createPortal(
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed z-50 left-1/2"
+            style={{
+              top: '30%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 'min(70%, 480px)'
+            }}
+          >
+            <div className="w-full text-center px-4 py-2 rounded-md text-sm text-red-100 bg-red-900/90 border border-red-700 shadow-lg">
+              {warningMsg}
+            </div>
+          </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
+
       {/* 控制按钮 - 缩小 */}
       <div className="absolute top-6 right-6 flex flex-col gap-2 z-10">
         <button
@@ -295,6 +454,31 @@ const SkyrimSkillTree = () => {
         >
           🔄 重置进度
         </button>
+        {/* 缩放控制按钮 */}
+        <div className="flex items-center gap-2 mt-1">
+          <button
+            onClick={zoomOut}
+            title="缩小"
+            className="w-8 h-8 bg-white/6 rounded text-white/80 hover:bg-white/10"
+          >
+            −
+          </button>
+          <div className="text-xs text-white/80 px-2">{(scale * 100).toFixed(0)}%</div>
+          <button
+            onClick={zoomIn}
+            title="放大"
+            className="w-8 h-8 bg-white/6 rounded text-white/80 hover:bg-white/10"
+          >
+            +
+          </button>
+          <button
+            onClick={resetZoom}
+            title="重置缩放"
+            className="ml-2 px-2 h-8 bg-white/6 rounded text-white/60 hover:bg-white/10 text-xs"
+          >
+            重置
+          </button>
+        </div>
       </div>
     </div>
   );

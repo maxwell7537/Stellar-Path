@@ -1,0 +1,20 @@
+{
+  "id": "constellation_devops",
+  "name": "The Engineer",
+  "title": "云端工匠 · DevOps",
+  "description": "连接开发与部署，构建自动化流水线。",
+  "gradient": "from-cyan-950 via-sky-900 to-black",
+  "starColor": "#00bcd4",
+  "glowColor": "#00e5ff",
+  "skills": [
+    { "id": "ops_linux", "name": "Linux", "x": 50, "y": 90, "desc": "Shell, 文件权限, 常用命令", "parent": null },
+    { "id": "ops_shell", "name": "Shell 脚本", "x": 35, "y": 80, "desc": "Bash, 变量, 流程控制", "parent": "ops_linux" },
+    { "id": "ops_net", "name": "网络配置", "x": 65, "y": 80, "desc": "iptables, ssh, netstat, curl", "parent": "ops_linux" },
+    { "id": "ops_docker", "name": "Docker", "x": 50, "y": 70, "desc": "Container, Image, Dockerfile", "parent": "ops_linux" },
+    { "id": "ops_compose", "name": "Compose", "x": 40, "y": 60, "desc": "多容器编排, yaml配置", "parent": "ops_docker" },
+    { "id": "ops_nginx", "name": "Nginx", "x": 20, "y": 50, "desc": "反向代理, 负载均衡, 动静分离", "parent": "ops_compose" },
+    { "id": "ops_k8s", "name": "Kubernetes", "x": 60, "y": 60, "desc": "Pod, Service, Deployment", "parent": "ops_docker" },
+    { "id": "ops_cicd", "name": "CI/CD", "x": 75, "y": 50, "desc": "Jenkins, GitLab CI, 自动化流水线", "parent": "ops_k8s" },
+    { "id": "ops_monitor", "name": "监控告警", "x": 60, "y": 40, "desc": "Prometheus, Grafana, ELK", "parent": "ops_k8s" }
+  ]
+}

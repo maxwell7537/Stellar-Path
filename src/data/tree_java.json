@@ -1,0 +1,21 @@
+{
+  "id": "constellation_java",
+  "name": "The Architect",
+  "title": "架构之基 · Java后端",
+  "description": "企业级开发的基石，高并发与微服务。",
+  "gradient": "from-amber-950 via-orange-950 to-black",
+  "starColor": "#ffab40",
+  "glowColor": "#ff6d00",
+  "skills": [
+    { "id": "java_base", "name": "Java SE", "x": 50, "y": 90, "desc": "JVM, JDK, 数据类型", "parent": null },
+    { "id": "java_oop", "name": "面向对象", "x": 50, "y": 80, "desc": "封装、继承、多态", "parent": "java_base" },
+    { "id": "java_coll", "name": "集合框架", "x": 35, "y": 70, "desc": "HashMap, ArrayList, Set", "parent": "java_oop" },
+    { "id": "java_io", "name": "IO / NIO", "x": 65, "y": 70, "desc": "File, Stream, Channel, Buffer", "parent": "java_oop" },
+    { "id": "java_conc", "name": "多线程并发", "x": 50, "y": 60, "desc": "Thread, Runnable, Synchronized, JUC", "parent": "java_oop" },
+    { "id": "java_jvm", "name": "JVM", "x": 30, "y": 50, "desc": "内存模型, GC垃圾回收, 类加载", "parent": "java_conc" },
+    { "id": "spring_boot", "name": "Spring Boot", "x": 70, "y": 50, "desc": "IoC, AOP, 自动配置", "parent": "java_conc" },
+    { "id": "spring_mvc", "name": "Spring MVC", "x": 80, "y": 40, "desc": "Controller, RestController", "parent": "spring_boot" },
+    { "id": "mybatis", "name": "MyBatis", "x": 60, "y": 40, "desc": "ORM, Mapper, SQL映射", "parent": "spring_boot" },
+    { "id": "micro_svc", "name": "微服务", "x": 70, "y": 25, "desc": "Spring Cloud, Gateway, Nacos", "parent": "spring_boot" }
+  ]
+}

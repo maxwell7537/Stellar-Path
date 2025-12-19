@@ -1,0 +1,20 @@
+{
+  "id": "constellation_security",
+  "name": "The Breaker",
+  "title": "破阵之矛 · 网络安全",
+  "description": "白帽子与黑客的博弈，寻找系统的裂痕。",
+  "gradient": "from-red-950 via-rose-950 to-black",
+  "starColor": "#ff1744",
+  "glowColor": "#ff5252",
+  "skills": [
+    { "id": "sec_base", "name": "安全导论", "x": 50, "y": 90, "desc": "CIA三要素，黑客伦理", "parent": null },
+    { "id": "sec_web", "name": "Web 安全", "x": 50, "y": 80, "desc": "OWASP Top 10", "parent": "sec_base" },
+    { "id": "web_sqli", "name": "SQL 注入", "x": 30, "y": 70, "desc": "万能密码，Union注入", "parent": "sec_web" },
+    { "id": "web_xss", "name": "XSS", "x": 70, "y": 70, "desc": "跨站脚本攻击", "parent": "sec_web" },
+    { "id": "web_csrf", "name": "CSRF", "x": 85, "y": 60, "desc": "跨站请求伪造", "parent": "web_xss" },
+    { "id": "sec_crypto", "name": "密码学", "x": 50, "y": 60, "desc": "RSA, AES, MD5, SHA", "parent": "sec_web" },
+    { "id": "sec_sys", "name": "系统安全", "x": 50, "y": 50, "desc": "提权，痕迹清理", "parent": "sec_crypto" },
+    { "id": "sys_pwn", "name": "二进制", "x": 40, "y": 40, "desc": "缓冲区溢出，ROP", "parent": "sec_sys" },
+    { "id": "sec_tool", "name": "渗透工具", "x": 60, "y": 30, "desc": "Kali, BurpSuite, Metasploit", "parent": "sec_sys" }
+  ]
+}

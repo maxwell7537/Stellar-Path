@@ -1,0 +1,23 @@
+{
+  "id": "constellation_frontend",
+  "name": "The Interface",
+  "title": "界面之术 · 前端开发",
+  "description": "HTML搭建骨架，CSS粉饰外表，JS赋予灵魂。",
+  "gradient": "from-emerald-950 via-teal-900 to-black",
+  "starColor": "#00e676",
+  "glowColor": "#69f0ae",
+  "skills": [
+    { "id": "fe_html", "name": "HTML5", "x": 50, "y": 90, "desc": "语义化标签，DOM结构", "parent": null },
+    { "id": "fe_css", "name": "CSS3", "x": 30, "y": 80, "desc": "选择器，优先级，盒模型", "parent": "fe_html" },
+    { "id": "css_flex", "name": "Flexbox", "x": 20, "y": 70, "desc": "弹性布局，主轴与交叉轴", "parent": "fe_css" },
+    { "id": "css_grid", "name": "Grid", "x": 40, "y": 70, "desc": "网格布局，二维排版系统", "parent": "fe_css" },
+    { "id": "fe_js", "name": "JavaScript", "x": 70, "y": 80, "desc": "ES6+语法，事件循环", "parent": "fe_html" },
+    { "id": "js_dom", "name": "DOM API", "x": 65, "y": 70, "desc": "节点操作，事件监听", "parent": "fe_js" },
+    { "id": "js_async", "name": "异步编程", "x": 75, "y": 70, "desc": "Promise, Async/Await", "parent": "fe_js" },
+    { "id": "fe_react", "name": "React", "x": 60, "y": 55, "desc": "JSX, Virtual DOM, Diff算法", "parent": "fe_js" },
+    { "id": "react_hooks", "name": "Hooks", "x": 55, "y": 45, "desc": "useState, useEffect", "parent": "fe_react" },
+    { "id": "react_router", "name": "Router", "x": 65, "y": 45, "desc": "SPA 单页应用路由", "parent": "fe_react" },
+    { "id": "fe_ts", "name": "TypeScript", "x": 80, "y": 55, "desc": "静态类型，接口与泛型", "parent": "fe_js" },
+    { "id": "fe_build", "name": "工程化", "x": 50, "y": 30, "desc": "Webpack, Vite, Babel", "parent": "react_hooks" }
+  ]
+}

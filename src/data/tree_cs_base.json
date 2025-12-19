@@ -1,0 +1,21 @@
+{
+  "id": "constellation_cs_base",
+  "name": "The Scholar",
+  "title": "通识之卷 · 计算机基础",
+  "description": "万丈高楼平地起，涵盖算法、网络与系统。",
+  "gradient": "from-purple-950 via-fuchsia-950 to-black",
+  "starColor": "#e040fb",
+  "glowColor": "#d500f9",
+  "skills": [
+    { "id": "cs_math", "name": "离散数学", "x": 50, "y": 90, "desc": "集合论、逻辑、图论基础", "parent": null },
+    { "id": "cs_algo", "name": "算法导论", "x": 35, "y": 75, "desc": "时间复杂度、空间复杂度", "parent": "cs_math" },
+    { "id": "cs_sort", "name": "排序算法", "x": 25, "y": 65, "desc": "快速排序、归并排序、堆排序", "parent": "cs_algo" },
+    { "id": "cs_search", "name": "查找算法", "x": 45, "y": 65, "desc": "二分查找、哈希表查找", "parent": "cs_algo" },
+    { "id": "cs_net", "name": "计算机网络", "x": 65, "y": 75, "desc": "OSI七层模型、TCP/IP四层模型", "parent": "cs_math" },
+    { "id": "net_tcp", "name": "传输层", "x": 75, "y": 65, "desc": "TCP可靠传输、UDP无连接", "parent": "cs_net" },
+    { "id": "net_http", "name": "应用层", "x": 85, "y": 55, "desc": "HTTP/1.1, HTTP/2, HTTPS加密", "parent": "net_tcp" },
+    { "id": "cs_os", "name": "操作系统", "x": 50, "y": 60, "desc": "进程管理、内存分页、文件系统", "parent": "cs_math" },
+    { "id": "os_process", "name": "进程/线程", "x": 50, "y": 50, "desc": "死锁、并发、互斥锁", "parent": "cs_os" },
+    { "id": "design_pattern", "name": "设计模式", "x": 50, "y": 35, "desc": "单例、工厂、观察者、策略", "parent": "os_process" }
+  ]
+}

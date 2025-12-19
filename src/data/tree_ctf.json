@@ -1,0 +1,60 @@
+{
+  "id": "constellation_ctf",
+  "name": "The Hacker",
+  "title": "极客之道 · CTF全栈",
+  "description": "从Web渗透到二进制逆向，夺旗赛(CTF)的终极知识图谱。",
+  "gradient": "from-slate-950 via-green-950 to-black",
+  "starColor": "#00ff41",
+  "glowColor": "#008f11",
+  "skills": [
+    { "id": "ctf_root", "name": "CTF 导论", "x": 50, "y": 95, "desc": "Capture The Flag 竞赛模式简介", "parent": null, "freeUnlock": true },
+
+    { "id": "web_root", "name": "Web 安全", "x": 50, "y": 85, "desc": "Web 漏洞挖掘与利用", "parent": "ctf_root" },
+
+    { "id": "web_sqli", "name": "SQL 注入", "x": 35, "y": 75, "desc": "Structured Query Language Injection", "parent": "web_root" },
+    { "id": "sqli_union", "name": "联合查询", "x": 25, "y": 70, "desc": "UNION SELECT", "parent": "web_sqli" },
+    { "id": "sqli_error", "name": "报错注入", "x": 25, "y": 65, "desc": "updatexml, extractvalue", "parent": "web_sqli" },
+    { "id": "sqli_bool", "name": "布尔盲注", "x": 25, "y": 60, "desc": "True/False 推断", "parent": "web_sqli" },
+    { "id": "sqli_time", "name": "时间盲注", "x": 30, "y": 55, "desc": "sleep(), benchmark()", "parent": "web_sqli" },
+    { "id": "sqli_stack", "name": "堆叠注入", "x": 40, "y": 60, "desc": "; 分隔多条语句", "parent": "web_sqli" },
+    { "id": "sqli_sqlmap", "name": "SQLMap", "x": 45, "y": 65, "desc": "自动化注入神器", "parent": "web_sqli", "freeUnlock": true },
+
+    { "id": "web_xss", "name": "XSS 跨站", "x": 65, "y": 75, "desc": "Cross Site Scripting", "parent": "web_root" },
+    { "id": "xss_reflect", "name": "反射型", "x": 75, "y": 70, "desc": "非持久化，URL触发", "parent": "web_xss" },
+    { "id": "xss_store", "name": "存储型", "x": 80, "y": 65, "desc": "持久化入库，危害大", "parent": "web_xss" },
+    { "id": "xss_dom", "name": "DOM型", "x": 70, "y": 60, "desc": "前端JS逻辑漏洞", "parent": "web_xss" },
+
+    { "id": "web_rce", "name": "RCE", "x": 50, "y": 70, "desc": "远程命令/代码执行", "parent": "web_root" },
+    { "id": "rce_cmd", "name": "命令注入", "x": 50, "y": 60, "desc": "system(), passthru()", "parent": "web_rce" },
+    { "id": "rce_eval", "name": "代码执行", "x": 55, "y": 55, "desc": "eval(), assert()", "parent": "web_rce" },
+    { "id": "rce_deser", "name": "反序列化", "x": 45, "y": 55, "desc": "PHP unserialize, Java readObject", "parent": "web_rce" },
+
+    { "id": "web_ssrf", "name": "SSRF", "x": 60, "y": 65, "desc": "服务器端请求伪造", "parent": "web_root" },
+    { "id": "web_csrf", "name": "CSRF", "x": 40, "y": 65, "desc": "跨站请求伪造", "parent": "web_root" },
+
+    { "id": "rev_root", "name": "逆向工程", "x": 20, "y": 85, "desc": "Reverse Engineering", "parent": "ctf_root" },
+    { "id": "rev_asm", "name": "汇编基础", "x": 15, "y": 75, "desc": "x86, x64, ARM", "parent": "rev_root" },
+    { "id": "rev_tool", "name": "分析工具", "x": 10, "y": 65, "desc": "IDA Pro, Ghidra", "parent": "rev_root", "freeUnlock": true },
+    { "id": "rev_debug", "name": "动态调试", "x": 20, "y": 65, "desc": "OllyDbg, x64dbg, GDB", "parent": "rev_root" },
+    { "id": "rev_shell", "name": "加壳脱壳", "x": 15, "y": 55, "desc": "UPX, VMP, 手动脱壳", "parent": "rev_root" },
+    { "id": "rev_apk", "name": "安卓逆向", "x": 25, "y": 55, "desc": "APK, Smali, Frida", "parent": "rev_root" },
+
+    { "id": "crypto_root", "name": "密码学", "x": 80, "y": 85, "desc": "Cryptography", "parent": "ctf_root" },
+    { "id": "cry_classic", "name": "古典密码", "x": 85, "y": 75, "desc": "凯撒, 维吉尼亚, 栅栏", "parent": "crypto_root" },
+    { "id": "cry_sym", "name": "对称加密", "x": 75, "y": 65, "desc": "AES, DES, RC4", "parent": "crypto_root" },
+    { "id": "cry_asym", "name": "RSA", "x": 90, "y": 65, "desc": "公钥私钥, 大数分解", "parent": "crypto_root" },
+    { "id": "cry_hash", "name": "哈希函数", "x": 80, "y": 55, "desc": "MD5, SHA, 彩虹表", "parent": "crypto_root" },
+    { "id": "cry_ecc", "name": "ECC", "x": 85, "y": 45, "desc": "椭圆曲线加密", "parent": "cry_asym" },
+
+    { "id": "misc_root", "name": "Misc & 取证", "x": 50, "y": 40, "desc": "杂项与数据恢复", "parent": "ctf_root" },
+    { "id": "misc_disk", "name": "磁盘取证", "x": 40, "y": 30, "desc": "FTK, 文件恢复", "parent": "misc_root" },
+    { "id": "misc_mem", "name": "内存取证", "x": 60, "y": 30, "desc": "Volatility", "parent": "misc_root" },
+    { "id": "misc_traffic", "name": "流量分析", "x": 50, "y": 30, "desc": "Wireshark, USB流量", "parent": "misc_root" },
+    { "id": "misc_stego", "name": "隐写术", "x": 50, "y": 20, "desc": "LSB, 图片/音频隐写", "parent": "misc_root" },
+
+    { "id": "pwn_root", "name": "PWN", "x": 20, "y": 40, "desc": "二进制漏洞利用", "parent": "rev_root" },
+    { "id": "pwn_stack", "name": "栈溢出", "x": 15, "y": 30, "desc": "Stack Overflow", "parent": "pwn_root" },
+    { "id": "pwn_heap", "name": "堆溢出", "x": 25, "y": 30, "desc": "Heap Overflow, Use After Free", "parent": "pwn_root" },
+    { "id": "pwn_rop", "name": "ROP", "x": 20, "y": 20, "desc": "Return Oriented Programming", "parent": "pwn_stack" }
+  ]
+}
