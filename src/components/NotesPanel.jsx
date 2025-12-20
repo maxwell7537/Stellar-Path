@@ -205,20 +205,18 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
                 <div key={n.id} className="p-2 bg-white/3 rounded">
                   <div className="flex justify-between items-start">
                     <div>
-                      <div className="font-medium text-sm">{n.title}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="font-medium text-sm">{n.title}</div>
+                        {/* small star/dot badges for associated nodes */}
+                        <div className="flex items-center gap-1">
+                          {n.nodeIds && n.nodeIds.map(id => (
+                            <button key={id} onClick={() => onOpenSkillById && onOpenSkillById(id)} title={skillNameMap.get(id) || id} className="w-3 h-3 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-400 to-amber-500 text-white text-[10px] hover:scale-110 transition-shadow" />
+                          ))}
+                        </div>
+                      </div>
                       <div className="text-xs text-white/60">{new Date(n.updatedAt).toLocaleString()}</div>
                     </div>
                     <div className="flex gap-1 items-center">
-                      {n.nodeIds && n.nodeIds.length > 0 && (
-                        <div className="flex gap-1">
-                          {n.nodeIds.map(id => (
-                            <button key={id} className="text-xs px-2 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-500 transform hover:scale-105 transition" onClick={() => onOpenSkillById && onOpenSkillById(id)}>
-                              <span className="mr-1">🔖</span>
-                              {skillNameMap.get(id) || id}
-                            </button>
-                          ))}
-                        </div>
-                      )}
                       <button className="text-xs px-2 py-1 bg-white/6 rounded" onClick={() => openNoteInEditor(n)}>查看</button>
                       <button className="text-xs px-2 py-1 bg-red-700 rounded" onClick={() => handleDelete(n.id)}>删</button>
                     </div>
@@ -250,9 +248,12 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
           <div className="flex flex-wrap gap-2 mb-4">
             {noteNodeIds && noteNodeIds.length > 0 ? (
               noteNodeIds.map((id, idx) => (
-                <button key={id+idx} onClick={() => onOpenSkillById && onOpenSkillById(id)} className="text-sm px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-500 transform hover:scale-105 transition">
-                  <span className="mr-2">🔖</span>{noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}
-                </button>
+                <div key={id+idx} className="flex items-center gap-2">
+                  <button onClick={() => onOpenSkillById && onOpenSkillById(id)} title={noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id} className="w-3 h-3 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-500" />
+                  <button onClick={() => onOpenSkillById && onOpenSkillById(id)} className="text-sm text-white/80 hover:underline">
+                    {noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}
+                  </button>
+                </div>
               ))
             ) : (
               <div className="text-xs text-white/60">无关联节点</div>
