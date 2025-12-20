@@ -210,7 +210,16 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
                         {/* small star/dot badges for associated nodes */}
                         <div className="flex items-center gap-1">
                           {n.nodeIds && n.nodeIds.map(id => (
-                            <button key={id} onClick={() => onOpenSkillById && onOpenSkillById(id)} title={skillNameMap.get(id) || id} className="w-3 h-3 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-400 to-amber-500 text-white text-[10px] hover:scale-110 transition-shadow" />
+                            <button
+                              key={id}
+                              type="button"
+                              onClick={() => onOpenSkillById && onOpenSkillById(id)}
+                              title={skillNameMap.get(id) || id}
+                              className="w-4 h-4 rounded-full flex items-center justify-center bg-gradient-to-tr from-yellow-400 to-amber-500 text-white text-[10px] hover:scale-110 transition-shadow cursor-pointer"
+                              aria-label={`打开技能 ${skillNameMap.get(id) || id}`}
+                            >
+                              <span className="text-[8px]">✦</span>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -249,7 +258,15 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
             {noteNodeIds && noteNodeIds.length > 0 ? (
               noteNodeIds.map((id, idx) => (
                 <div key={id+idx} className="flex items-center gap-2">
-                  <button onClick={() => onOpenSkillById && onOpenSkillById(id)} title={noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id} className="w-3 h-3 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-500" />
+                  <button
+                    type="button"
+                    onClick={() => onOpenSkillById && onOpenSkillById(id)}
+                    title={noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}
+                    className="w-4 h-4 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-500 flex items-center justify-center cursor-pointer"
+                    aria-label={`打开技能 ${noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}`}
+                  >
+                    <span className="text-[10px]">✦</span>
+                  </button>
                   <button onClick={() => onOpenSkillById && onOpenSkillById(id)} className="text-sm text-white/80 hover:underline">
                     {noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}
                   </button>
