@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:notes": "node scripts/build-notes-manifest.js"
   },
   "dependencies": {
-    
     "framer-motion": "^12.23.26",
+    "markdown-it": "^13.0.1",
+    "dompurify": "^3.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConstellationView from './ConstellationView';
+import NotesPanel from './NotesPanel';
 import { constellationRegistry } from '../data';
 
 const SkyrimSkillTree = () => {
@@ -14,6 +15,8 @@ const SkyrimSkillTree = () => {
   const [warningMsg, setWarningMsg] = useState('');
   const [showWarning, setShowWarning] = useState(false);
   const [scale, setScale] = useState(1);
+  const [showNotes, setShowNotes] = useState(false);
+  const [notesPreviewOpen, setNotesPreviewOpen] = useState(false);
   // 初始向上偏移一点，使视图稍微向上展示（更接近自然阅读位置）
   const [pan, setPan] = useState({ x: 0, y: -10 }); // 视图单位偏移（0-100）
   const containerRef = useRef(null);
@@ -65,6 +68,7 @@ const SkyrimSkillTree = () => {
     // 先准备 tooltipPos（如果有）但不要默认打开 tooltip，只有在可查看或已解锁时再打开
 
     // 计算并设置 tooltip 的像素位置（相对于根容器）
+  // 根据 note 中的 nodeId 打开对应技能（若在当前星座内）
     if (pos && rootRef.current && pos.rect) {
       const rootRect = rootRef.current.getBoundingClientRect();
       // pos.rect 是节点的 screen rect
@@ -225,9 +229,9 @@ const SkyrimSkillTree = () => {
             key={currentConstellation.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
             <h1 
               className="text-3xl tracking-[0.3em] font-bold mb-2"
               style={{ 
@@ -479,6 +483,51 @@ const SkyrimSkillTree = () => {
             重置
           </button>
         </div>
+        {/* 笔记按钮已移至左侧边缘拉出标签，以便更直观的侧栏交互 */}
+      </div>
+      {/* 笔记面板（侧栏） */}
+      <NotesPanel
+        visible={showNotes}
+        onClose={() => setShowNotes(false)}
+        selectedSkill={selectedSkill}
+        onOpenSkillById={(id) => {
+          // 切换并选中技能（若在当前星座外会自动切换星座）
+          const foundIndex = constellations.findIndex(c => c.skills.some(s => s.id === id));
+          if (foundIndex !== -1 && foundIndex !== currentIndex) {
+            setCurrentIndex(foundIndex);
+            setTimeout(() => {
+              const target = constellations[foundIndex].skills.find(s => s.id === id);
+              setSelectedSkill(target || null);
+              setShowTooltip(true);
+            }, 300);
+            return;
+          }
+          const target = currentConstellation.skills.find(s => s.id === id);
+          if (target) {
+            setSelectedSkill(target);
+            setShowTooltip(true);
+          }
+        }}
+        onPreviewChange={setNotesPreviewOpen}
+      />
+      {/* 左侧拉出/隐藏标签 */}
+      <div
+        className="fixed top-[35%] z-50"
+        // 动画地将 tab 从屏幕左侧移动到侧栏右侧，使其看起来像贴在侧栏边缘
+        style={{ left: showNotes ? '360px' : 0, transition: 'left 220ms ease', display: notesPreviewOpen ? 'none' : undefined }}
+      >
+        <button
+          onClick={() => setShowNotes(s => !s)}
+          aria-label="Toggle notes panel"
+          className="flex items-center justify-center w-12 h-28 rounded-r-md bg-white/6 text-white/90 hover:bg-white/10 border-l border-white/5 shadow-md"
+          title="笔记"
+        >
+          {/* 竖排显示：把两个汉字竖着堆叠，兼容性稳定 */}
+          <span className="flex flex-col items-center leading-none text-sm">
+            <span>笔</span>
+            <span>记</span>
+          </span>
+        </button>
       </div>
     </div>
   );
