@@ -1,7 +1,7 @@
 ---
 title: "入门笔记：二进制之道"
 date: "2025-12-20"
-nodeIds: ["cs_root", "skill_bitwise"]
+nodeIds: ["cs_root"]
 ---
 
 # 入门笔记：二进制之道

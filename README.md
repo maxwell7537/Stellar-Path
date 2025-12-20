@@ -53,3 +53,5 @@ npm run preview
 ├── postcss.config.js               # PostCSS 配置
 └── README.md                       # 本文件
 
+重新生成
+node scripts/build-notes-manifest.js

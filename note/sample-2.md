@@ -1,7 +1,7 @@
 ---
 title: "深入：Python 协程"
 date: "2025-12-20"
-nodeIds: ["lang_py_async", "skill_coroutine"]
+nodeIds: ["lang_py_async"]
 ---
 
 # 深入：Python 协程

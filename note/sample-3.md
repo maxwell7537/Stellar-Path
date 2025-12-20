@@ -1,7 +1,7 @@
 ---
 title: "题解：动态规划思路"
 date: "2025-12-20"
-nodeIds: ["algo_dp", "skill_dp"]
+nodeIds: ["algo_dp"]
 ---
 
 # 题解：动态规划思路

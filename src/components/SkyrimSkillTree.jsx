@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ConstellationView from './ConstellationView';
 import NotesPanel from './NotesPanel';
 import { constellationRegistry } from '../data';
+import skyrimSkillData from '../data/skyrimSkillData.json';
 
 const SkyrimSkillTree = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,7 +24,8 @@ const SkyrimSkillTree = () => {
   const rootRef = useRef(null);
   const draggingRef = useRef({ dragging: false, startX: 0, startY: 0, startPan: { x: 0, y: 0 } });
 
-  const constellations = constellationRegistry;
+  // allow dynamically appending constellations from other data files (notes may reference them)
+  const [constellations, setConstellations] = useState(constellationRegistry);
   const currentConstellation = constellations[currentIndex];
 
   // 从 localStorage 加载进度
@@ -45,6 +47,87 @@ const SkyrimSkillTree = () => {
   const nextConstellation = () => {
     setCurrentIndex((prev) => (prev + 1) % constellations.length);
     setSelectedSkill(null);
+  };
+
+  // Smoothly animate pan and scale to target values over duration (ms)
+  const animatePanAndScale = (fromPan, toPan, fromScale, toScale, duration = 400) => {
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const ease = 0.5 - Math.cos(t * Math.PI) / 2; // easeInOut
+      const nx = fromPan.x + (toPan.x - fromPan.x) * ease;
+      const ny = fromPan.y + (toPan.y - fromPan.y) * ease;
+      const ns = fromScale + (toScale - fromScale) * ease;
+      setPan({ x: nx, y: ny });
+      setScale(ns);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const focusSkillById = (id) => {
+    // close notes / preview
+    setShowNotes(false);
+
+  let foundIndex = constellations.findIndex(c => c.skills.some(s => s.id === id));
+
+    const doFocus = (constellation) => {
+      if (!constellation) return;
+      const target = constellation.skills.find(s => s.id === id);
+      if (!target) return;
+      // compute transformed coordinates same as ConstellationView
+      const spreadX = typeof constellation.spreadX === 'number' ? constellation.spreadX : (constellation.spread || 2.0);
+      const spreadY = typeof constellation.spreadY === 'number' ? constellation.spreadY : (constellation.spread || 1.3);
+      const centerX = 50;
+      const centerY = 50;
+      const tx = centerX + ((target.x || centerX) - centerX) * spreadX;
+      const ty = centerY + ((target.y || centerY) - centerY) * spreadY;
+      const panTarget = { x: centerX - tx, y: centerY - ty };
+      const targetScale = Math.max(1, Math.min(1.6, scale * 1.15));
+      // animate pan/scale
+      animatePanAndScale(pan, panTarget, scale, targetScale, 450);
+      // set selected and tooltip
+      setSelectedSkill(target);
+      setShowTooltip(true);
+      // flash/highlight the node briefly
+      setFlashNodeId(id);
+      setTimeout(() => setFlashNodeId(null), 1200);
+    };
+
+  let appendedConstellation = null;
+  if (foundIndex === -1) {
+      // Try to find in skyrimSkillData (a larger dataset); if found, append that constellation so we can switch to it
+      try {
+        const other = (skyrimSkillData && skyrimSkillData.constellations) || [];
+        const otherConst = other.find(c => (c.skills || []).some(s => s.id === id));
+        if (otherConst) {
+          // avoid duplicates by id
+          const exists = constellations.findIndex(c => c.id === otherConst.id);
+          if (exists === -1) {
+            const next = [...constellations, otherConst];
+            setConstellations(next);
+            appendedConstellation = otherConst;
+            foundIndex = next.length - 1;
+          } else {
+            foundIndex = exists;
+          }
+        }
+      } catch (e) {
+        console.error('SkyrimSkillTree: error searching alternate constellations', e);
+      }
+    }
+
+    if (foundIndex !== -1 && foundIndex !== currentIndex) {
+      setCurrentIndex(foundIndex);
+      // wait for constellation switch animation to finish (approx)
+      setTimeout(() => {
+        // prefer appendedConstellation if we just added it, otherwise use state snapshot
+        const targetConst = appendedConstellation || constellations[foundIndex] || (skyrimSkillData.constellations && skyrimSkillData.constellations.find(c => c.id === (constellations[foundIndex] && constellations[foundIndex].id)));
+        doFocus(targetConst);
+      }, 360);
+      return;
+    }
+    doFocus(currentConstellation);
   };
 
   // 切换到上一个星座
@@ -490,24 +573,7 @@ const SkyrimSkillTree = () => {
         visible={showNotes}
         onClose={() => setShowNotes(false)}
         selectedSkill={selectedSkill}
-        onOpenSkillById={(id) => {
-          // 切换并选中技能（若在当前星座外会自动切换星座）
-          const foundIndex = constellations.findIndex(c => c.skills.some(s => s.id === id));
-          if (foundIndex !== -1 && foundIndex !== currentIndex) {
-            setCurrentIndex(foundIndex);
-            setTimeout(() => {
-              const target = constellations[foundIndex].skills.find(s => s.id === id);
-              setSelectedSkill(target || null);
-              setShowTooltip(true);
-            }, 300);
-            return;
-          }
-          const target = currentConstellation.skills.find(s => s.id === id);
-          if (target) {
-            setSelectedSkill(target);
-            setShowTooltip(true);
-          }
-        }}
+        onOpenSkillById={focusSkillById}
         onPreviewChange={setNotesPreviewOpen}
       />
       {/* 左侧拉出/隐藏标签 */}

@@ -4,8 +4,7 @@
     "filename": "sample-1.md",
     "title": "入门笔记：二进制之道",
     "nodeIds": [
-      "cs_root",
-      "skill_bitwise"
+      "cs_root"
     ]
   },
   {
@@ -13,8 +12,7 @@
     "filename": "sample-2.md",
     "title": "深入：Python 协程",
     "nodeIds": [
-      "lang_py_async",
-      "skill_coroutine"
+      "lang_py_async"
     ]
   },
   {
@@ -22,8 +20,7 @@
     "filename": "sample-3.md",
     "title": "题解：动态规划思路",
     "nodeIds": [
-      "algo_dp",
-      "skill_dp"
+      "algo_dp"
     ]
   }
 ]
