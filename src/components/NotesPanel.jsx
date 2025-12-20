@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import { loadNotes, createNote, updateNote, deleteNote, getNotesByNodeId, getNote } from '../notes';
+import { loadNotes, createNote, updateNote, deleteNote, getNotesByNodeId, getNote, setSkillNameMap } from '../notes';
 import constellationRegistry from '../data';
 import { useMemo } from 'react';
 
@@ -13,6 +13,8 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
   const [editing, setEditing] = useState(null); // note id 或 'new' 表示新建，null 表示不在全屏编辑
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [noteNodeIds, setNoteNodeIds] = useState([]);
+  const [noteNodeNames, setNoteNodeNames] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -121,14 +123,20 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
       if (n) {
         setTitle(n.title || note.title || note.id);
         setContent(n.content || '');
+        setNoteNodeIds(n.nodeIds || []);
+        setNoteNodeNames(n.nodeNames || (n.nodeIds || []).map(id => skillNameMap.get(id) || id));
       } else {
         setTitle(note.title || note.id);
         setContent(note.content || '');
+        setNoteNodeIds(note.nodeIds || []);
+        setNoteNodeNames((note.nodeIds || []).map(id => skillNameMap.get(id) || id));
       }
     } catch (e) {
       console.error('NotesPanel: openNoteInEditor error', e);
       setTitle(note.title || note.id);
       setContent(note.content || '');
+      setNoteNodeIds(note.nodeIds || []);
+      setNoteNodeNames((note.nodeIds || []).map(id => skillNameMap.get(id) || id));
     }
     setEditing(note.id);
   };
@@ -152,6 +160,15 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
     }
     return map;
   }, []);
+
+  // inject mapping into notes module so it can resolve nodeNames server-side/client-side
+  useEffect(() => {
+    try {
+      setSkillNameMap(Object.fromEntries(Array.from(skillNameMap.entries())));
+    } catch (e) {
+      // ignore
+    }
+  }, [skillNameMap]);
 
   // 渲染 markdown 为安全的 html
   const renderMarkdown = (text) => {
@@ -195,7 +212,8 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
                       {n.nodeIds && n.nodeIds.length > 0 && (
                         <div className="flex gap-1">
                           {n.nodeIds.map(id => (
-                            <button key={id} className="text-xs px-2 py-1 bg-emerald-700/30 rounded" onClick={() => onOpenSkillById && onOpenSkillById(id)}>
+                            <button key={id} className="text-xs px-2 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-500 transform hover:scale-105 transition" onClick={() => onOpenSkillById && onOpenSkillById(id)}>
+                              <span className="mr-1">🔖</span>
                               {skillNameMap.get(id) || id}
                             </button>
                           ))}
@@ -227,6 +245,20 @@ const NotesPanel = ({ visible, onClose, selectedSkill, onOpenSkillById, onPrevie
       </div>
 
       <div className="flex-1 overflow-auto p-6">
+        <div className="mb-4">
+          <div className="text-sm text-white/60 mb-2">关联节点</div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {noteNodeIds && noteNodeIds.length > 0 ? (
+              noteNodeIds.map((id, idx) => (
+                <button key={id+idx} onClick={() => onOpenSkillById && onOpenSkillById(id)} className="text-sm px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-500 transform hover:scale-105 transition">
+                  <span className="mr-2">🔖</span>{noteNodeNames && noteNodeNames[idx] ? noteNodeNames[idx] : id}
+                </button>
+              ))
+            ) : (
+              <div className="text-xs text-white/60">无关联节点</div>
+            )}
+          </div>
+        </div>
         <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(content)} />
       </div>
     </div>

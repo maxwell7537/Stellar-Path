@@ -32,6 +32,24 @@ function parseFrontmatter(text) {
 
 // simple in-memory cache for parsed note frontmatter to reduce repeated fetches during session
 const noteMetaCache = new Map();
+// skill name mapping cache (id -> name)
+const skillNameMap = new Map();
+
+function setSkillNameMap(mapLike) {
+  skillNameMap.clear();
+  if (!mapLike) return;
+  if (mapLike instanceof Map) {
+    for (const [k, v] of mapLike) skillNameMap.set(k, v);
+    return;
+  }
+  // assume plain object
+  for (const k of Object.keys(mapLike)) skillNameMap.set(k, mapLike[k]);
+}
+
+function resolveNodeNames(nodeIds) {
+  if (!Array.isArray(nodeIds)) return [];
+  return nodeIds.map(id => skillNameMap.get(id) || id);
+}
 
 async function apiAvailable() {
   try {
@@ -73,7 +91,7 @@ async function loadNotes() {
     const res = await fetch('/api/notes');
     const list = await res.json();
     // Map to our internal shape (id,title,content optional)
-    return list.map(i => ({ id: i.id, title: i.title || i.filename, content: null, nodeIds: i.nodeIds || [], createdAt: i.createdAt, updatedAt: i.updatedAt }));
+    return list.map(i => ({ id: i.id, title: i.title || i.filename, content: null, nodeIds: i.nodeIds || [], nodeNames: resolveNodeNames(i.nodeIds || []), createdAt: i.createdAt, updatedAt: i.updatedAt }));
   }
 
   // Try to read a static manifest under /note/notes.json (served by Vite as static file)
@@ -81,7 +99,10 @@ async function loadNotes() {
     const m = await fetch('/note/notes.json');
     if (m.ok) {
       const list = await m.json();
-      return list.map(i => ({ id: i.id, title: i.title || i.filename, content: null }));
+      return list.map(i => {
+        const nodeIds = Array.isArray(i.nodeIds) ? i.nodeIds : (i.nodeIds ? [i.nodeIds] : []);
+        return { id: i.id, title: i.title || i.filename, content: null, nodeIds, nodeNames: resolveNodeNames(nodeIds) };
+      });
     }
   } catch (e) {
     // ignore
@@ -156,9 +177,10 @@ async function getNote(id) {
       const meta = pf.meta || {};
       const nodeIds = Array.isArray(meta.nodeIds) ? meta.nodeIds : (meta.nodeIds ? [meta.nodeIds] : []);
       const title = meta.title || id;
+      const nodeNames = resolveNodeNames(nodeIds);
       // cache meta
-      noteMetaCache.set(id, { title, nodeIds });
-      return { id, title, content: pf.content, nodeIds };
+      noteMetaCache.set(id, { title, nodeIds, nodeNames });
+      return { id, title, content: pf.content, nodeIds, nodeNames };
     }
   } catch (e) {
     // ignore
@@ -194,4 +216,4 @@ async function getNotesByNodeId(nodeId) {
   return result;
 }
 
-export { loadNotes, saveNotes, createNote, updateNote, deleteNote, getNote, getNotesByNodeId };
+export { loadNotes, saveNotes, createNote, updateNote, deleteNote, getNote, getNotesByNodeId, setSkillNameMap };
